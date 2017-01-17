@@ -1,0 +1,56 @@
+#!/bin/bash
+
+set -x
+
+export MYSQL_DB_HOST=${MYSQL_DB_HOST:-mysql}
+export MYSQL_DB_USER=${MYSQL_DB_USER}
+export MYSQL_DB_PASSWORD=${MYSQL_DB_PASSWORD}
+export MYSQL_DB_NAME=${MYSQL_DB_NAME}
+
+export ELASTICSEARCH_HOST=${ELASTICSEARCH_HOST:-elasticsearch}
+export ELASTICSEARCH_URL=${ELASTICSEARCH_URL:-http://$ELASTICSEARCH_HOST:9200}
+
+env | sort
+
+if [ ! -e /var/www/html/config/config.database.php ]; then
+	profile=$(mktemp)
+
+	cat <<-EOF > ${profile}
+	{
+		"no-interactive": true,
+		"skip": [
+			"checks"
+		],
+		"install-source": "automated_installer",
+		"dbinfo": {
+			"host": "MYSQL_DB_HOST",
+			"user": "MYSQL_DB_USER",
+			"password": "MYSQL_DB_PASSWORD",
+			"dbname": "MYSQL_DB_NAME"
+		},
+		"path_php": "/usr/local/bin/php",
+		"path_mysql": "/usr/bin/mysql",
+		"path_mysqldump": "/usr/bin/mysqldump",
+		"filestorage_method": "fs"
+	}
+	EOF
+
+	sed -i "s/MYSQL_DB_HOST/${MYSQL_DB_HOST}/" "$profile"
+	sed -i "s/MYSQL_DB_USER/${MYSQL_DB_USER}/" "$profile"
+	sed -i "s/MYSQL_DB_NAME/${MYSQL_DB_NAME}/" "$profile"
+
+	# password might have slashes, escape them
+
+	MYSQL_DB_PASSWORD=$(sed 's:/:\\/:' <<< "$MYSQL_DB_PASSWORD")
+
+	sed -i "s/MYSQL_DB_PASSWORD/${MYSQL_DB_PASSWORD}/" "$profile"
+
+	cp -r /usr/src/deskpro/* /var/www/html/
+	chown -R www-data:www-data /var/www/html/
+
+	cd /var/www/html/
+
+	bin/install --profile "$profile" --no-interaction
+fi
+
+exec apache2-foreground
