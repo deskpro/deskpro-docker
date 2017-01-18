@@ -1,16 +1,14 @@
 #!/bin/bash
 
-set -x
+set -o nounset
 
-export MYSQL_DB_HOST=${MYSQL_DB_HOST:-mysql}
-export MYSQL_DB_USER=${MYSQL_DB_USER}
-export MYSQL_DB_PASSWORD=${MYSQL_DB_PASSWORD}
-export MYSQL_DB_NAME=${MYSQL_DB_NAME}
+MYSQL_DB_HOST=${MYSQL_DB_HOST:-mysql}
+MYSQL_DB_USER=${MYSQL_DB_USER}
+MYSQL_DB_PASSWORD=${MYSQL_DB_PASSWORD}
+MYSQL_DB_NAME=${MYSQL_DB_NAME}
 
-export ELASTICSEARCH_HOST=${ELASTICSEARCH_HOST:-elasticsearch}
-export ELASTICSEARCH_URL=${ELASTICSEARCH_URL:-http://$ELASTICSEARCH_HOST:9200}
-
-env | sort
+ELASTICSEARCH_HOST=${ELASTICSEARCH_HOST:-elasticsearch}
+ELASTICSEARCH_URL=${ELASTICSEARCH_URL:-http://$ELASTICSEARCH_HOST:9200}
 
 if [ ! -e /var/www/html/config/config.database.php ]; then
 	mysql_command="SELECT COUNT(DISTINCT \`table_name\`) FROM \`information_schema\`.\`columns\` WHERE \`table_schema\` = '$MYSQL_DB_NAME'"
