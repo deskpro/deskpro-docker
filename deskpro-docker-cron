@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+while [ ! -e /var/www/html/config/config.database.php ]; do
+	echo "DeskPRO not installed yet, waiting..."
+	sleep 10
+done
+
+trap "break;exit" SIGHUP SIGINT SIGTERM
+
+while true ; do
+	/usr/local/bin/php /var/www/html/bin/cron
+	sleep 60
+done
