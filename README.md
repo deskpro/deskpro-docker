@@ -8,7 +8,15 @@ DeskPRO is the modern helpdesk platform. It offers a ticket system, user help po
 
 # How to use this image
 
-In order to run DeskPRO, you'll need to run two containers from this image: one for the web interface and one for the periodic tasks. It's also required to set a few environment variables:
+In order to run DeskPRO, you'll need to run two containers from this image: one for the web interface and one for the periodic tasks. They will have to share a volume containing the DeskPRO codebase. If running manually, it will look like the following:
+
+```console
+$ docker volume create deskpro
+$ docker run [...] --volume deskpro:/var/www/html deskpro/deskpro
+$ docker run [...] --volume deskpro:/var/www/html deskpro/deskpro deskpro-docker-cron
+```
+
+It's also required to set a few environment variables:
 
 * `MYSQL_HOST`: the hostname/IP address of the desired MySQL database host
 * `MYSQL_USER`: the username to connect to MySQL as
