@@ -1,0 +1,33 @@
+---
+version: '2'
+services:
+  deskpro:
+    build: .
+    depends_on:
+      - mariadb
+    environment:
+      MYSQL_HOST: mariadb
+      MYSQL_USER: deskprouser
+      MYSQL_PASSWORD: deskpropassword
+      MYSQL_DATABASE: deskprodb
+    ports:
+      - "80:80"
+    volumes:
+      - deskpro:/var/www/html
+  cron:
+    build: .
+    command: deskpro-docker-cron
+    depends_on:
+      - deskpro
+      - mariadb
+    volumes:
+      - deskpro:/var/www/html
+  mariadb:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: mysqlrootpassword
+      MYSQL_DATABASE: deskprodb
+      MYSQL_USER: deskprouser
+      MYSQL_PASSWORD: deskpropassword
+volumes:
+  deskpro:
