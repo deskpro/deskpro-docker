@@ -11,6 +11,11 @@ ELASTICSEARCH_HOST=${ELASTICSEARCH_HOST:-elasticsearch}
 ELASTICSEARCH_URL=${ELASTICSEARCH_URL:-http://$ELASTICSEARCH_HOST:9200}
 
 if [ ! -e /var/www/html/config/config.database.php ]; then
+	while ! mysql -h "$MYSQL_DB_HOST" -u "$MYSQL_DB_USER" -p"$MYSQL_DB_PASSWORD" --execute "use $MYSQL_DB_NAME" ; do
+		echo "Database is not ready yet, waiting..."
+		sleep 3
+	done
+
 	mysql_command="SELECT COUNT(DISTINCT \`table_name\`) FROM \`information_schema\`.\`columns\` WHERE \`table_schema\` = '$MYSQL_DB_NAME'"
 	tables=$(mysql --batch --skip-column-names -h "$MYSQL_DB_HOST" -u "$MYSQL_DB_USER" -p"$MYSQL_DB_PASSWORD" --execute "$mysql_command")
 
