@@ -2,22 +2,22 @@
 
 set -o nounset
 
-MYSQL_DB_HOST=${MYSQL_DB_HOST:-mysql}
-MYSQL_DB_USER=${MYSQL_DB_USER}
-MYSQL_DB_PASSWORD=${MYSQL_DB_PASSWORD}
-MYSQL_DB_NAME=${MYSQL_DB_NAME}
+MYSQL_HOST=${MYSQL_HOST:-mysql}
+MYSQL_USER=${MYSQL_USER}
+MYSQL_PASSWORD=${MYSQL_PASSWORD}
+MYSQL_DATABASE=${MYSQL_DATABASE}
 
 ELASTICSEARCH_HOST=${ELASTICSEARCH_HOST:-elasticsearch}
 ELASTICSEARCH_URL=${ELASTICSEARCH_URL:-http://$ELASTICSEARCH_HOST:9200}
 
 if [ ! -e /var/www/html/config/config.database.php ]; then
-	while ! mysql -h "$MYSQL_DB_HOST" -u "$MYSQL_DB_USER" -p"$MYSQL_DB_PASSWORD" --execute "use $MYSQL_DB_NAME" ; do
+	while ! mysql -h "$MYSQL_HOST" -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" --execute "use $MYSQL_DATABASE" ; do
 		echo "Database is not ready yet, waiting..."
 		sleep 3
 	done
 
-	mysql_command="SELECT COUNT(DISTINCT \`table_name\`) FROM \`information_schema\`.\`columns\` WHERE \`table_schema\` = '$MYSQL_DB_NAME'"
-	tables=$(mysql --batch --skip-column-names -h "$MYSQL_DB_HOST" -u "$MYSQL_DB_USER" -p"$MYSQL_DB_PASSWORD" --execute "$mysql_command")
+	mysql_command="SELECT COUNT(DISTINCT \`table_name\`) FROM \`information_schema\`.\`columns\` WHERE \`table_schema\` = '$MYSQL_DATABASE'"
+	tables=$(mysql --batch --skip-column-names -h "$MYSQL_HOST" -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" --execute "$mysql_command")
 
 	if [ "$tables" -ne "0" ]; then
 		echo -e "Your database is not empty\n\nPlease try again using an empty one"
@@ -35,10 +35,10 @@ if [ ! -e /var/www/html/config/config.database.php ]; then
 		],
 		"install-source": "automated_installer",
 		"dbinfo": {
-			"host": "MYSQL_DB_HOST",
-			"user": "MYSQL_DB_USER",
-			"password": "MYSQL_DB_PASSWORD",
-			"dbname": "MYSQL_DB_NAME"
+			"host": "MYSQL_HOST",
+			"user": "MYSQL_USER",
+			"password": "MYSQL_PASSWORD",
+			"dbname": "MYSQL_DATABASE"
 		},
 		"path_php": "/usr/local/bin/php",
 		"path_mysql": "/usr/bin/mysql",
@@ -47,14 +47,14 @@ if [ ! -e /var/www/html/config/config.database.php ]; then
 	}
 	EOF
 
-	sed -i "s/MYSQL_DB_HOST/${MYSQL_DB_HOST}/" "$profile"
-	sed -i "s/MYSQL_DB_USER/${MYSQL_DB_USER}/" "$profile"
-	sed -i "s/MYSQL_DB_NAME/${MYSQL_DB_NAME}/" "$profile"
+	sed -i "s/MYSQL_HOST/${MYSQL_HOST}/" "$profile"
+	sed -i "s/MYSQL_USER/${MYSQL_USER}/" "$profile"
+	sed -i "s/MYSQL_DATABASE/${MYSQL_DATABASE}/" "$profile"
 
 	# password might have slashes, escape them
-	MYSQL_DB_PASSWORD=$(sed 's:/:\\/:' <<< "$MYSQL_DB_PASSWORD")
+	MYSQL_PASSWORD=$(sed 's:/:\\/:' <<< "$MYSQL_PASSWORD")
 
-	sed -i "s/MYSQL_DB_PASSWORD/${MYSQL_DB_PASSWORD}/" "$profile"
+	sed -i "s/MYSQL_PASSWORD/${MYSQL_PASSWORD}/" "$profile"
 
 	cp -r /usr/src/deskpro/* /var/www/html/
 	chown -R www-data:www-data /var/www/html/
