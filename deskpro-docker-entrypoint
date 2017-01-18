@@ -1,0 +1,14 @@
+#!/bin/sh
+set -e
+
+# first arg is `-f` or `--some-option`
+if [ "${1#-}" != "$1" ]; then
+	set -- deskpro-docker-cmd "$@"
+fi
+
+# allow the container to be started with `--user`
+if [ "$1" = 'deskpro-docker-cron' -a "$(id -u)" = '0' ]; then
+	exec gosu www-data "$0" "$@"
+fi
+
+exec "$@"

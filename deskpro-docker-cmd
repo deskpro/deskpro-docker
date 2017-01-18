@@ -52,7 +52,6 @@ if [ ! -e /var/www/html/config/config.database.php ]; then
 	sed -i "s/MYSQL_DB_NAME/${MYSQL_DB_NAME}/" "$profile"
 
 	# password might have slashes, escape them
-
 	MYSQL_DB_PASSWORD=$(sed 's:/:\\/:' <<< "$MYSQL_DB_PASSWORD")
 
 	sed -i "s/MYSQL_DB_PASSWORD/${MYSQL_DB_PASSWORD}/" "$profile"
