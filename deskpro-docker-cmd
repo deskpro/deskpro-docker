@@ -12,7 +12,7 @@ ELASTICSEARCH_URL=${ELASTICSEARCH_URL:-http://$ELASTICSEARCH_HOST:9200}
 
 if [ ! -e /var/www/html/config/config.database.php ]; then
 	mysql_command="SELECT COUNT(DISTINCT \`table_name\`) FROM \`information_schema\`.\`columns\` WHERE \`table_schema\` = '$MYSQL_DB_NAME'"
-	tables=$(mysql --batch --skip-column-names -h "$MYSQL_DB_HOST" -u "$MYSQL_DB_PASSWORD" -p"$MYSQL_DB_PASSWORD" --execute "$mysql_command")
+	tables=$(mysql --batch --skip-column-names -h "$MYSQL_DB_HOST" -u "$MYSQL_DB_USER" -p"$MYSQL_DB_PASSWORD" --execute "$mysql_command")
 
 	if [ "$tables" -ne "0" ]; then
 		echo -e "Your database is not empty\n\nPlease try again using an empty one"
