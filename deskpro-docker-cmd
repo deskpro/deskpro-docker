@@ -7,9 +7,6 @@ MYSQL_USER=${MYSQL_USER}
 MYSQL_PASSWORD=${MYSQL_PASSWORD}
 MYSQL_DATABASE=${MYSQL_DATABASE}
 
-ELASTICSEARCH_HOST=${ELASTICSEARCH_HOST:-elasticsearch}
-ELASTICSEARCH_URL=${ELASTICSEARCH_URL:-http://$ELASTICSEARCH_HOST:9200}
-
 if [ ! -e /var/www/html/config/config.database.php ]; then
 	while ! mysql -h "$MYSQL_HOST" -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" --execute "use $MYSQL_DATABASE" ; do
 		echo "Database is not ready yet, waiting..."
