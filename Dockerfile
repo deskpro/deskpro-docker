@@ -45,7 +45,6 @@ COPY deskpro.conf /etc/apache2/sites-enabled/deskpro.conf
 
 COPY php.ini /usr/local/etc/php/
 
-ENTRYPOINT ["deskpro-docker-entrypoint"]
-
 COPY deskpro-docker-* /usr/local/bin/
 
+CMD ["deskpro-docker-cmd"]
