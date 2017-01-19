@@ -8,7 +8,7 @@ DeskPRO is the modern helpdesk platform. It offers a ticket system, user help po
 
 # How to use this image
 
-In order to run DeskPRO, you'll need to run two containers from this image: one for the web interface and one for the periodic tasks. They will have to share a volume containing the DeskPRO codebase. If running manually, it will look like the following:
+In order to run DeskPRO, you'll need to run two containers from this image: one for the web interface and one for the periodic tasks. They will have to share a volume containing the DeskPRO codebase. If running manually, it can look like the following:
 
 ```console
 $ docker volume create deskpro
