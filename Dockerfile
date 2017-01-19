@@ -1,6 +1,8 @@
 FROM php:7-apache
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN set -x \
+	&& apt-get update \
+	&& apt-get install -y --no-install-recommends \
 		cron \
 		libc-client-dev \
 		libfreetype6-dev \
@@ -30,12 +32,20 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 	&& docker-php-ext-install -j$(nproc) ldap \
 	&& a2enmod \
 		rewrite \
+	&& apt-get remove -y \
+		libc-client-dev \
+		libfreetype6-dev \
+		libicu-dev \
+		libjpeg62-turbo-dev \
+		libkrb5-dev \
+		libldap2-dev \
+		libmcrypt-dev \
+		libpng12-dev \
+		libxml2-dev \
+		libzip-dev \
 	&& rm -rf /var/lib/apt/lists/*
 
-RUN curl -L https://www.deskpro.com/downloads/deskpro.zip -o deskpro.zip \
-	&& mkdir /usr/src/deskpro \
-	&& unzip -d /usr/src/deskpro deskpro.zip \
-	&& rm -rf deskpro.zip
+RUN curl -L https://www.deskpro.com/downloads/deskpro.zip -o /usr/src/deskpro.zip
 
 ENV GOSU_VERSION 1.9
 RUN set -x \

@@ -53,7 +53,7 @@ if [ ! -e /var/www/html/config/config.database.php ]; then
 
 	sed -i "s/MYSQL_PASSWORD/${MYSQL_PASSWORD}/" "$profile"
 
-	cp -r /usr/src/deskpro/* /var/www/html/
+	unzip -d /var/www/html /usr/src/deskpro.zip
 	chown -R www-data:www-data /var/www/html/
 
 	cd /var/www/html/ && bin/install --profile "$profile" --no-interaction
