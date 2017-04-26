@@ -47,7 +47,7 @@ RUN set -x \
 
 RUN curl -L https://www.deskpro.com/downloads/deskpro.zip -o /usr/src/deskpro.zip
 
-ENV GOSU_VERSION 1.9
+ENV GOSU_VERSION 1.10
 RUN set -x \
     && dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
     && curl -L -o /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch" \
