@@ -8,12 +8,14 @@ DeskPRO is the modern helpdesk platform. It offers a ticket system, user help po
 
 # How to use this image
 
-In order to run DeskPRO, you'll need to run two containers from this image: one for the web interface and one for the periodic tasks. They will have to share a volume containing the DeskPRO codebase. If running manually, it can look like the following:
+You can choose from the two available variants: `apache` or `fpm`. The first comes with Apache preinstalled, while the second one runs `php-fpm`, which means you'll need something that speaks FCGI (such as [nginx](https://hub.docker.com/_/nginx/))  in front of it.
+
+In order to run DeskPRO, you'll need to run two containers from this image: one for the web interface and one for the periodic tasks. They have to share a volume containing the DeskPRO codebase. If running manually, it can look like the following:
 
 ```console
 $ docker volume create deskpro
-$ docker run [...] --volume deskpro:/var/www/html deskpro/deskpro
-$ docker run [...] --volume deskpro:/var/www/html deskpro/deskpro deskpro-docker-cron
+$ docker run [...] --volume deskpro:/var/www/html deskpro/deskpro:apache
+$ docker run [...] --volume deskpro:/var/www/html deskpro/deskpro:apache deskpro-docker-cron
 ```
 
 It's also required to set a few environment variables:
@@ -32,7 +34,7 @@ The easiest way to try this image is with a `docker-compose.yml` file such as be
 version: '2'
 services:
   deskpro:
-    image: deskpro/deskpro
+    image: deskpro/deskpro:apache
     depends_on:
       - mariadb
     environment:
@@ -45,7 +47,7 @@ services:
     volumes:
       - deskpro:/var/www/html
   cron:
-    image: deskpro/deskpro
+    image: deskpro/deskpro:apache
     command: deskpro-docker-cron
     depends_on:
       - deskpro
