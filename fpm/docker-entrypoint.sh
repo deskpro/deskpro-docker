@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -eo nounset
 
 # first arg is `-f` or `--some-option`

@@ -27,11 +27,15 @@ for variant in apache fpm; do
 		sed -ri -e '/a2enmod/d' "$variant/Dockerfile"
 	fi
 
-	# Copy the docker-entrypoint.
-	cp docker-entrypoint.sh "$variant/docker-entrypoint.sh"
+	# Copy executables
+	cp docker-entrypoint.sh deskpro-docker-cron "$variant/"
 
-	# Copy apps.config.php
-	# cp apps.config.php "$version/$variant/apps.config.php"
+	# Copy php config
+	cp php.ini "$variant/php.ini"
+
+	# Copy apache config (gets copied into fpm image, although it is not used
+	# by the container)
+	cp deskpro.conf "$variant/deskpro.conf"
 
 	travisEnv='\n  - VARIANT='"$variant$travisEnv"
 done
