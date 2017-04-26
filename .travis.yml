@@ -1,0 +1,26 @@
+language: bash
+services: docker
+
+env:
+  - VARIANT=fpm
+  - VARIANT=apache
+
+install:
+  - git clone https://github.com/docker-library/official-images.git ~/official-images
+
+before_script:
+  - env | sort
+  - image="deskpro:${VARIANT:+-$VARIANT}"
+  - hash_before=$(git write-tree)
+
+script:
+  # Test Image
+  - travis_retry docker build -t "$image" "${VARIANT}"
+  - ~/official-images/test/run.sh "$image"
+
+  # Test update.sh
+  - ./update.sh
+  - bash -c "[[ $hash_before = $(git add -A && git write-tree) ]]"
+
+after_script:
+  - docker images

@@ -1,4 +1,4 @@
-FROM php:7-apache
+FROM php:7-%%VARIANT%%
 
 RUN set -x \
 	&& apt-get update \
@@ -30,8 +30,6 @@ RUN set -x \
 	&& docker-php-ext-install -j$(nproc) imap \
 	&& docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
 	&& docker-php-ext-install -j$(nproc) ldap \
-	&& a2enmod \
-		rewrite \
 	&& apt-get remove -y \
 		libc-client-dev \
 		libfreetype6-dev \
@@ -44,6 +42,8 @@ RUN set -x \
 		libxml2-dev \
 		libzip-dev \
 	&& rm -rf /var/lib/apt/lists/*
+
+RUN a2enmod rewrite
 
 RUN curl -L https://www.deskpro.com/downloads/deskpro.zip -o /usr/src/deskpro.zip
 
@@ -67,7 +67,7 @@ COPY deskpro.conf /etc/apache2/sites-enabled/deskpro.conf
 
 COPY php.ini /usr/local/etc/php/
 
-COPY deskpro-docker-* /usr/local/bin/
+COPY docker-entrypoint.sh deskpro-docker-cron /usr/local/bin/
 
-ENTRYPOINT ["deskpro-docker-entrypoint"]
-CMD ["deskpro-docker-cmd"]
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["%%CMD%%"]
