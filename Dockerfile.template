@@ -1,4 +1,4 @@
-FROM php:7-%%VARIANT%%
+FROM php:7.0-%%VARIANT%%
 
 RUN set -x \
 	&& apt-get update \
@@ -11,7 +11,7 @@ RUN set -x \
 		libkrb5-dev \
 		libldap2-dev \
 		libmcrypt-dev \
-		libpng12-dev \
+		libpng-dev \
 		libxml2-dev \
 		libzip-dev \
 		mariadb-client \
@@ -38,7 +38,7 @@ RUN set -x \
 		libkrb5-dev \
 		libldap2-dev \
 		libmcrypt-dev \
-		libpng12-dev \
+		libpng-dev \
 		libxml2-dev \
 		libzip-dev \
 	&& rm -rf /var/lib/apt/lists/*
