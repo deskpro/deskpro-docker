@@ -64,3 +64,14 @@ services:
 volumes:
   deskpro:
 ```
+
+## Testing
+
+If you wish to work on the image itself, there's two files that'll allow you to run Deskpro with `docker-compose`:
+
+- `docker-compose-test-fpm.yml`: uses php-fpm and nginx
+- `docker-compose-test-apache.yml`: uses Apache
+
+Use them with `docker-compose -f filename.yml`.
+
+For actual usage of the image, check the previous section.
