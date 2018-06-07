@@ -69,7 +69,17 @@ RUN set -ex; \
 	\
 # verify the signature
 	export GNUPGHOME="$(mktemp -d)"; \
-	for attempt in 1 2 3 4 5; do gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 && break || sleep 10; done ; \
+	for attempt in 1 2 3 4 5; do \
+		for server in \
+			ha.pool.sks-keyservers.net \
+			hkp://p80.pool.sks-keyservers.net:80 \
+			keyserver.ubuntu.com \
+			hkp://keyserver.ubuntu.com:80 \
+			pgp.mit.edu; do \
+			gpg --keyserver $server --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 && break 2; \
+		done; \
+		sleep 10; \
+	done; \
 	gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu; \
 	rm -rf "$GNUPGHOME" /usr/local/bin/gosu.asc; \
 	\
