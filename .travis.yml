@@ -22,5 +22,8 @@ script:
   - ./update.sh
   - bash -c "[[ $hash_before = $(git add -A && git write-tree) ]]"
 
+  # Test requirements
+  - docker run -it --rm "$image" bash -c 'unzip -q /usr/src/deskpro.zip ; bin/check_requirements'
+
 after_script:
   - docker images
