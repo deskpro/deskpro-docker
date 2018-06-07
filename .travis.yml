@@ -10,7 +10,7 @@ install:
 
 before_script:
   - env | sort
-  - image="deskpro:${VARIANT:+-$VARIANT}"
+  - image="deskpro:${VARIANT}"
   - hash_before=$(git write-tree)
 
 script:
