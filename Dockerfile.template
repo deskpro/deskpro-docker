@@ -5,12 +5,16 @@ RUN set -x \
 	&& apt-get install -y --no-install-recommends \
 		cron \
 		libc-client-dev \
+		libfreetype6 \
 		libfreetype6-dev \
 		libicu-dev \
+		libjpeg62-turbo \
 		libjpeg62-turbo-dev \
 		libkrb5-dev \
 		libldap2-dev \
+		libmcrypt4 \
 		libmcrypt-dev \
+		libpng16-16 \
 		libpng-dev \
 		libxml2-dev \
 		libzip-dev \
