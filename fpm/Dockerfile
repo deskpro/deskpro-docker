@@ -34,6 +34,8 @@ RUN set -x \
 	&& docker-php-ext-install -j$(nproc) imap \
 	&& docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
 	&& docker-php-ext-install -j$(nproc) ldap \
+        && docker-php-ext-configure opcache --enable-opcache \
+	&& docker-php-ext-install opcache \ 
 	&& apt-get remove -y \
 		libc-client-dev \
 		libfreetype6-dev \
