@@ -30,7 +30,7 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro,z
       - deskpro-fpm:/var/www/html:ro
   mariadb:
-    image: mariadb
+    image: mariadb:10.3
     environment:
       MYSQL_ROOT_PASSWORD: mysqlrootpassword
       MYSQL_DATABASE: deskprodb
