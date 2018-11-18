@@ -63,7 +63,7 @@ if [[ "$1" == apache2* ]] || [ "$1" == php-fpm ]; then
 
 		sed -i "s/MYSQL_PASSWORD/${MYSQL_PASSWORD}/" "$profile"
 
-		unzip -d /var/www/html /usr/src/deskpro.zip
+		unzip -f -d /var/www/html /usr/src/deskpro.zip
 		chown -R www-data:www-data /var/www/html/
 
 		cd /var/www/html/ && bin/install --profile "$profile" --no-interaction
