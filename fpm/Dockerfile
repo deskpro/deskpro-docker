@@ -76,11 +76,11 @@ RUN set -ex; \
 			keyserver.ubuntu.com \
 			hkp://keyserver.ubuntu.com:80 \
 			pgp.mit.edu; do \
-			gpg --keyserver $server --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 && break 2; \
+			gpg --keyserver $server --no-tty --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 && break 2; \
 		done; \
 		sleep 10; \
 	done; \
-	gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu; \
+	gpg --batch --verify --no-tty /usr/local/bin/gosu.asc /usr/local/bin/gosu; \
 	rm -rf "$GNUPGHOME" /usr/local/bin/gosu.asc; \
 	\
 	chmod +x /usr/local/bin/gosu; \
