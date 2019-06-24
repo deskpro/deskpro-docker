@@ -3,6 +3,7 @@ FROM php:7.0-fpm
 RUN set -x \
 	&& apt-get update \
 	&& apt-get install -y --no-install-recommends \
+		ca-certificates \
 		cron \
 		libc-client-dev \
 		libfreetype6 \
