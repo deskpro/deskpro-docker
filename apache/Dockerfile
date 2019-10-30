@@ -1,4 +1,4 @@
-FROM php:7.0-apache
+FROM php:7.1.33-apache
 
 RUN set -x \
 	&& apt-get update \

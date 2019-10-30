@@ -1,4 +1,4 @@
-FROM php:7.0-%%VARIANT%%
+FROM php:7.1.33-%%VARIANT%%
 
 RUN set -x \
 	&& apt-get update \
