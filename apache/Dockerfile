@@ -1,4 +1,4 @@
-FROM php:7.1.33-apache
+FROM php:7.2-apache
 
 RUN set -x \
 	&& apt-get update \
@@ -14,8 +14,6 @@ RUN set -x \
 		libjpeg62-turbo-dev \
 		libkrb5-dev \
 		libldap2-dev \
-		libmcrypt4 \
-		libmcrypt-dev \
 		libpng16-16 \
 		libpng-dev \
 		libxml2-dev \
@@ -25,7 +23,6 @@ RUN set -x \
 	&& docker-php-ext-install -j$(nproc) \
 		iconv \
 		intl \
-		mcrypt \
 		opcache \
 		pdo_mysql \
 		soap \
@@ -43,7 +40,6 @@ RUN set -x \
 		libjpeg62-turbo-dev \
 		libkrb5-dev \
 		libldap2-dev \
-		libmcrypt-dev \
 		libpng-dev \
 		libxml2-dev \
 		libzip-dev \
